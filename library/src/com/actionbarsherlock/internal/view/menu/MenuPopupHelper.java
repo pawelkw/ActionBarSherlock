@@ -44,7 +44,7 @@ import com.actionbarsherlock.view.MenuItem;
  */
 public class MenuPopupHelper implements AdapterView.OnItemClickListener, View.OnKeyListener,
         ViewTreeObserver.OnGlobalLayoutListener, PopupWindow.OnDismissListener,
-        View_OnAttachStateChangeListener, MenuPresenter {
+         MenuPresenter {
     //UNUSED private static final String TAG = "MenuPopupHelper";
 
     static final int ITEM_LAYOUT = R.layout.abs__popup_menu_item_layout;
@@ -118,7 +118,6 @@ public class MenuPopupHelper implements AdapterView.OnItemClickListener, View.On
             final boolean addGlobalListener = mTreeObserver == null;
             mTreeObserver = anchor.getViewTreeObserver(); // Refresh to latest
             if (addGlobalListener) mTreeObserver.addOnGlobalLayoutListener(this);
-            ((View_HasStateListenerSupport)anchor).addOnAttachStateChangeListener(this);
             mPopup.setAnchorView(anchor);
         } else {
             return false;
@@ -145,7 +144,6 @@ public class MenuPopupHelper implements AdapterView.OnItemClickListener, View.On
             mTreeObserver.removeGlobalOnLayoutListener(this);
             mTreeObserver = null;
         }
-        ((View_HasStateListenerSupport)mAnchorView).removeOnAttachStateChangeListener(this);
     }
 
     public boolean isShowing() {
@@ -203,19 +201,6 @@ public class MenuPopupHelper implements AdapterView.OnItemClickListener, View.On
                 mPopup.show();
             }
         }
-    }
-
-    @Override
-    public void onViewAttachedToWindow(View v) {
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(View v) {
-        if (mTreeObserver != null) {
-            if (!mTreeObserver.isAlive()) mTreeObserver = v.getViewTreeObserver();
-            mTreeObserver.removeGlobalOnLayoutListener(this);
-        }
-        ((View_HasStateListenerSupport)v).removeOnAttachStateChangeListener(this);
     }
 
     @Override
